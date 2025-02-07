@@ -1,9 +1,28 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_list_or_404
 
 # Create your views here.
 
 from  django.http import HttpResponse
 from datetime import datetime
+
+from . import models
+
+def book_list_view(request):
+    if request.method == 'GET':
+        query = models.BookModel.objects.all().order_by('-id')
+        context_object_name = {
+            'book': query,
+        }
+        return render(request, 'show.html', context=context_object_name)
+
+def book_detail_view(request, id):
+    if request.method == 'GET':
+        query = get_list_or_404(models.BookModel, id=id)
+        context_object_name = {
+            'book_id': query,
+
+        }
+        return render(request, 'show_detail.html', context=context_object_name)
 
 
 def about_me(request):
